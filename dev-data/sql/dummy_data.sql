@@ -1,6 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `routinder` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `routinder`;
--- MySQL dump 10.13  Distrib 8.0.21, for macos10.15 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.19, for macos10.15 (x86_64)
 --
 -- Host: 127.0.0.1    Database: routinder
 -- ------------------------------------------------------
@@ -18,13 +18,13 @@ USE `routinder`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `routines`
+-- Table structure for table `routine`
 --
 
-DROP TABLE IF EXISTS `routines`;
+DROP TABLE IF EXISTS `routine`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `routines` (
+CREATE TABLE `routine` (
   `id` int NOT NULL AUTO_INCREMENT,
   `userId` int DEFAULT NULL,
   `title` varchar(255) NOT NULL,
@@ -36,19 +36,19 @@ CREATE TABLE `routines` (
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   KEY `stickerId` (`stickerId`),
-  CONSTRAINT `routines_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`),
-  CONSTRAINT `routines_ibfk_2` FOREIGN KEY (`stickerId`) REFERENCES `stickerInfo` (`id`)
+  CONSTRAINT `routine_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`),
+  CONSTRAINT `routine_ibfk_2` FOREIGN KEY (`stickerId`) REFERENCES `stickerInfo` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `routines`
+-- Dumping data for table `routine`
 --
 
-LOCK TABLES `routines` WRITE;
-/*!40000 ALTER TABLE `routines` DISABLE KEYS */;
-INSERT INTO `routines` VALUES (1,1,'스트레칭','2021-05-03 05:17:30','2021-04-01 00:00:00','2021-05-01 00:00:00','0123456',1),(2,1,'블로그쓰기','2021-05-03 05:24:09','2021-03-01 00:00:00','2021-06-01 00:00:00','5',2),(3,1,'근력운동','2021-05-03 05:24:09','2021-03-17 00:00:00','2021-05-23 00:00:00','024',3);
-/*!40000 ALTER TABLE `routines` ENABLE KEYS */;
+LOCK TABLES `routine` WRITE;
+/*!40000 ALTER TABLE `routine` DISABLE KEYS */;
+INSERT INTO `routine` VALUES (1,1,'스트레칭','2021-05-03 05:17:30','2021-04-01 00:00:00','2021-05-01 00:00:00','0123456',1),(2,1,'블로그쓰기','2021-05-03 05:24:09','2021-03-01 00:00:00','2021-06-01 00:00:00','5',2),(3,1,'근력운동','2021-05-03 05:24:09','2021-03-17 00:00:00','2021-05-23 00:00:00','024',3);
+/*!40000 ALTER TABLE `routine` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -77,13 +77,13 @@ INSERT INTO `stickerInfo` VALUES (1,'red','https://i.imgur.com/hfWvR6S.png'),(2,
 UNLOCK TABLES;
 
 --
--- Table structure for table `stickerStamps`
+-- Table structure for table `stickerStamp`
 --
 
-DROP TABLE IF EXISTS `stickerStamps`;
+DROP TABLE IF EXISTS `stickerStamp`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `stickerStamps` (
+CREATE TABLE `stickerStamp` (
   `id` int NOT NULL AUTO_INCREMENT,
   `userId` int DEFAULT NULL,
   `routineId` int DEFAULT NULL,
@@ -93,44 +93,43 @@ CREATE TABLE `stickerStamps` (
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   KEY `routineId` (`routineId`),
-  CONSTRAINT `stickerStamps_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`),
-  CONSTRAINT `stickerStamps_ibfk_2` FOREIGN KEY (`routineId`) REFERENCES `routines` (`id`)
+  CONSTRAINT `stickerStamp_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`),
+  CONSTRAINT `stickerStamp_ibfk_2` FOREIGN KEY (`routineId`) REFERENCES `routine` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `stickerStamps`
+-- Dumping data for table `stickerStamp`
 --
 
-LOCK TABLES `stickerStamps` WRITE;
-/*!40000 ALTER TABLE `stickerStamps` DISABLE KEYS */;
-INSERT INTO `stickerStamps` VALUES (1,1,1,1,'2021-04-02 00:00:00','2021-04-02 17:00:00'),(2,1,1,0,'2021-04-03 00:00:00',NULL);
-/*!40000 ALTER TABLE `stickerStamps` ENABLE KEYS */;
+LOCK TABLES `stickerStamp` WRITE;
+/*!40000 ALTER TABLE `stickerStamp` DISABLE KEYS */;
+INSERT INTO `stickerStamp` VALUES (1,1,1,1,'2021-04-02 00:00:00','2021-04-02 17:00:00'),(2,1,1,0,'2021-04-03 00:00:00',NULL);
+/*!40000 ALTER TABLE `stickerStamp` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `users`
+-- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `users` (
+CREATE TABLE `user` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`)
+  `username` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `users`
+-- Dumping data for table `user`
 --
 
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'jhur');
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'jhur');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -142,4 +141,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-03 14:49:15
+-- Dump completed on 2021-05-05 13:04:28
