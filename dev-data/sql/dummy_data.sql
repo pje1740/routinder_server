@@ -37,7 +37,7 @@ CREATE TABLE `routine` (
   KEY `userId` (`userId`),
   KEY `stickerId` (`stickerId`),
   CONSTRAINT `routine_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`),
-  CONSTRAINT `routine_ibfk_2` FOREIGN KEY (`stickerId`) REFERENCES `stickerInfo` (`id`)
+  CONSTRAINT `routine_ibfk_2` FOREIGN KEY (`stickerId`) REFERENCES `sticker` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -52,13 +52,13 @@ INSERT INTO `routine` VALUES (1,1,'스트레칭','2021-05-03 05:17:30','2021-04-
 UNLOCK TABLES;
 
 --
--- Table structure for table `stickerInfo`
+-- Table structure for table `sticker`
 --
 
-DROP TABLE IF EXISTS `stickerInfo`;
+DROP TABLE IF EXISTS `sticker`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `stickerInfo` (
+CREATE TABLE `sticker` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `url` varchar(255) NOT NULL,
@@ -67,13 +67,13 @@ CREATE TABLE `stickerInfo` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `stickerInfo`
+-- Dumping data for table `sticker`
 --
 
-LOCK TABLES `stickerInfo` WRITE;
-/*!40000 ALTER TABLE `stickerInfo` DISABLE KEYS */;
-INSERT INTO `stickerInfo` VALUES (1,'red','https://i.imgur.com/hfWvR6S.png'),(2,'blue','https://i.imgur.com/yvAjmbi.png'),(3,'yellow','https://i.imgur.com/57HW19I.png');
-/*!40000 ALTER TABLE `stickerInfo` ENABLE KEYS */;
+LOCK TABLES `sticker` WRITE;
+/*!40000 ALTER TABLE `sticker` DISABLE KEYS */;
+INSERT INTO `sticker` VALUES (1,'red','https://i.imgur.com/hfWvR6S.png'),(2,'blue','https://i.imgur.com/yvAjmbi.png'),(3,'yellow','https://i.imgur.com/57HW19I.png');
+/*!40000 ALTER TABLE `sticker` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
