@@ -6,6 +6,9 @@ import { join } from 'path';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
+import { RoutinesModule } from './routines/routines.module';
+import { StickersModule } from './stickers/stickers.module';
+import { StickerStampsModule } from './sticker-stamps/sticker-stamps.module';
 
 @Module({
   imports: [
@@ -23,10 +26,13 @@ import { ConfigModule } from '@nestjs/config';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      entities: [__dirname + '/**/*.entity.{ts,js}'],
       synchronize: true,
     }),
     UsersModule,
+    RoutinesModule,
+    StickersModule,
+    StickerStampsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
