@@ -8,10 +8,12 @@ import { UpdateRoutineInput } from './dto/update-routine.input';
 export class RoutinesResolver {
   constructor(private readonly routinesService: RoutinesService) {}
 
-  // @Mutation(() => Routine)
-  // createRoutine(@Args('createRoutineInput') createRoutineInput: CreateRoutineInput) {
-  //   return this.routinesService.create(createRoutineInput);
-  // }
+  @Mutation(() => Routine)
+  createRoutine(
+    @Args('createRoutineInput') createRoutineInput: CreateRoutineInput,
+  ) {
+    return this.routinesService.create(createRoutineInput);
+  }
 
   @Query(() => [Routine], { name: 'routines' })
   findAll() {

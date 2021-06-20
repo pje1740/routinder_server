@@ -11,9 +11,11 @@ export class RoutinesService {
     @InjectRepository(Routine) private routinesRepository: Repository<Routine>,
   ) {}
 
-  // create(createRoutineInput: CreateRoutineInput) {
-  //   return 'This action adds a new routine';
-  // }
+  create(createRoutineInput: CreateRoutineInput): Promise<Routine> {
+    const newRoutine = this.routinesRepository.create(createRoutineInput);
+
+    return this.routinesRepository.save(newRoutine);
+  }
 
   findAll(): Promise<Routine[]> {
     return this.routinesRepository.find();

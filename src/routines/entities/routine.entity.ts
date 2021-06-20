@@ -2,6 +2,7 @@ import { StickerStamp } from './../../sticker-stamps/entities/sticker-stamp.enti
 import { Sticker } from './../../stickers/entities/sticker.entity';
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { User } from 'src/users/entities/user.entity';
+import { format } from 'date-fns';
 import {
   Column,
   Entity,
@@ -21,13 +22,16 @@ export class Routine {
   @Column()
   @Field()
   @ManyToOne(() => User, (user) => user.id)
-  userId: string;
+  userId: number;
 
   @Column()
   @Field()
   title: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({
+    type: 'timestamp',
+    default: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+  })
   @Field()
   createdAt: Date;
 
