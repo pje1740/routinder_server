@@ -1,15 +1,7 @@
 import { StickerStamp } from './../../sticker-stamps/entities/sticker-stamp.entity';
-import { Sticker } from './../../stickers/entities/sticker.entity';
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { User } from 'src/users/entities/user.entity';
 import { format } from 'date-fns';
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 @ObjectType()
@@ -21,7 +13,6 @@ export class Routine {
 
   @Column()
   @Field()
-  @ManyToOne(() => User, (user) => user.id)
   userId: number;
 
   @Column()
@@ -49,6 +40,5 @@ export class Routine {
 
   @Column()
   @Field()
-  @ManyToOne(() => Sticker, (sticker) => sticker.id)
   stickerId: number;
 }
