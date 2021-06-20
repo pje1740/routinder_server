@@ -1,19 +1,28 @@
+import { User } from 'src/users/entities/user.entity';
 import { StickerStamp } from './../../sticker-stamps/entities/sticker-stamp.entity';
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { format } from 'date-fns';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 @ObjectType()
 export class Routine {
   @PrimaryGeneratedColumn()
   @Field(() => Int)
-  @OneToMany(() => StickerStamp, (stickerStamp) => stickerStamp.routineId)
   id: number;
 
-  @Column()
-  @Field()
-  userId: number;
+  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.routines)
+  user: User;
+
+  @Field(() => StickerStamp)
+  @OneToMany(() => StickerStamp, (stickerStamps) => stickerStamps.routine)
+  stickerStamps: StickerStamp;
 
   @Column()
   @Field()
@@ -21,7 +30,7 @@ export class Routine {
 
   @Column({
     type: 'timestamp',
-    default: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+    default: () => 'CURRENT_TIMESTAMP',
   })
   @Field()
   createdAt: Date;

@@ -25,9 +25,16 @@ export class RoutinesService {
     return this.routinesRepository.findOne(id);
   }
 
-  // update(id: number, updateRoutineInput: UpdateRoutineInput) {
-  //   return `This action updates a #${id} routine`;
-  // }
+  async update(
+    id: number,
+    updateRoutineInput: UpdateRoutineInput,
+  ): Promise<Routine> {
+    let routine = await this.routinesRepository.findOne(id);
+    routine = { ...routine, ...updateRoutineInput };
+
+    await this.routinesRepository.save(routine);
+    return this.routinesRepository.findOne(id);
+  }
 
   // remove(id: number) {
   //   return `This action removes a #${id} routine`;
