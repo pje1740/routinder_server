@@ -12,6 +12,7 @@
     "start": "nest start",
     "start:dev": "NODE_ENV=dev nest start --watch",
     "start:db": "cd dev-data && bash init.sh && cd ..",
+    "clear:db": "bash dev-data/clean.sh",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
