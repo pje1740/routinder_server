@@ -1,8 +1,9 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Args, Int } from '@nestjs/graphql';
 import { StickersService } from './stickers.service';
 import { Sticker } from './entities/sticker.entity';
-import { CreateStickerInput } from './dto/create-sticker.input';
-import { UpdateStickerInput } from './dto/update-sticker.input';
+// import { isThisISOWeek } from 'date-fns';
+// import { CreateStickerInput } from './dto/create-sticker.input';
+// import { UpdateStickerInput } from './dto/update-sticker.input';
 
 @Resolver(() => Sticker)
 export class StickersResolver {
@@ -23,6 +24,14 @@ export class StickersResolver {
     return this.stickersService.findOne(id);
   }
 
+  @Query(() => [Sticker], { name: 'stickers' })
+  findByMonth(
+    @Args('id', { type: () => Int }) id: number,
+    @Args('after', { type: () => Date }) after: Date,
+    @Args('before', { type: () => Date }) before: Date,
+  ) {
+    return this.stickersService.findByMonth(id, after, before);
+  }
   // @Mutation(() => Sticker)
   // updateSticker(@Args('updateStickerInput') updateStickerInput: UpdateStickerInput) {
   //   return this.stickersService.update(updateStickerInput.id, updateStickerInput);

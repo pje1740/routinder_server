@@ -1,8 +1,8 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Args, Int } from '@nestjs/graphql';
 import { StickerStampsService } from './sticker-stamps.service';
 import { StickerStamp } from './entities/sticker-stamp.entity';
-import { CreateStickerStampInput } from './dto/create-sticker-stamp.input';
-import { UpdateStickerStampInput } from './dto/update-sticker-stamp.input';
+// import { CreateStickerStampInput } from './dto/create-sticker-stamp.input';
+// import { UpdateStickerStampInput } from './dto/update-sticker-stamp.input';
 
 @Resolver(() => StickerStamp)
 export class StickerStampsResolver {
@@ -21,6 +21,15 @@ export class StickerStampsResolver {
   @Query(() => StickerStamp, { name: 'stickerStamp' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.stickerStampsService.findOne(id);
+  }
+
+  @Query(() => [StickerStamp], { name: 'stickerStamps' })
+  findByMonth(
+    @Args('id', { type: () => Int }) id: number,
+    @Args('after', { type: () => Date }) after: Date,
+    @Args('before', { type: () => Date }) before: Date,
+  ) {
+    return this.stickerStampsService.findByMonth(id, after, before);
   }
 
   // @Mutation(() => StickerStamp)

@@ -1,8 +1,9 @@
 import { StickerStamp } from './entities/sticker-stamp.entity';
+import { Routine } from '../routines/entities/routine.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateStickerStampInput } from './dto/create-sticker-stamp.input';
-import { UpdateStickerStampInput } from './dto/update-sticker-stamp.input';
+// import { CreateStickerStampInput } from './dto/create-sticker-stamp.input';
+// import { UpdateStickerStampInput } from './dto/update-sticker-stamp.input';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -24,6 +25,19 @@ export class StickerStampsService {
     return this.StickerStampsRepository.findOne(id);
   }
 
+  findByMonth(id: number, after?: Date, before?: Date) {
+    return this.StickerStampsRepository.createQueryBuilder('stamp')
+      .innerJoinAndMapOne(
+        'stamp.routine',
+        Routine,
+        'routine',
+        'stamp.routineId = routine.id',
+      )
+      .where('routine.userId = :userId', { userId: id })
+      .andWhere('routine.startDate >= :start', { start: after })
+      .andWhere('routine.startDate < :end', { end: before })
+      .getMany();
+  }
   // update(id: number, updateStickerStampInput: UpdateStickerStampInput) {
   //   return `This action updates a #${id} stickerStamp`;
   // }
