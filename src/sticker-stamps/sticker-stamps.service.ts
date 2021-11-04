@@ -38,6 +38,17 @@ export class StickerStampsService {
       .andWhere('routine.startDate < :end', { end: before })
       .getMany();
   }
+
+  updateRoutineCompleted(id: number, isCompleted: boolean) {
+    return this.StickerStampsRepository.createQueryBuilder()
+      .update('stamp')
+      .set({
+        isCompleted: isCompleted,
+        completedAt: isCompleted ? new Date() : null,
+      })
+      .where('id = :id', { id: id })
+      .execute();
+  }
   // update(id: number, updateStickerStampInput: UpdateStickerStampInput) {
   //   return `This action updates a #${id} stickerStamp`;
   // }
