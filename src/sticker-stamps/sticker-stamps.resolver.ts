@@ -1,6 +1,6 @@
-import { Resolver, Query, Args, Int, Mutation } from '@nestjs/graphql';
-import { StickerStampsService } from './sticker-stamps.service';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { StickerStamp } from './entities/sticker-stamp.entity';
+import { StickerStampsService } from './sticker-stamps.service';
 // import { CreateStickerStampInput } from './dto/create-sticker-stamp.input';
 // import { UpdateStickerStampInput } from './dto/update-sticker-stamp.input';
 
@@ -23,16 +23,16 @@ export class StickerStampsResolver {
     return this.stickerStampsService.findOne(id);
   }
 
-  @Query(() => [StickerStamp], { name: 'stickerStamps' })
-  findByMonth(
+  @Query(() => [StickerStamp], { name: 'stickerStampsByDate' })
+  findByDate(
     @Args('id', { type: () => Int }) id: number,
     @Args('after', { type: () => Date }) after: Date,
     @Args('before', { type: () => Date }) before: Date,
   ) {
-    return this.stickerStampsService.findByMonth(id, after, before);
+    return this.stickerStampsService.findByDate(id, after, before);
   }
 
-  @Mutation(() => StickerStamp)
+  @Mutation(() => StickerStamp, { name: 'stickerStampsUpdateRoutine' })
   updateRoutineCompleted(
     @Args('id', { type: () => Int }) id: number,
     @Args('isCompleted', { type: () => Boolean }) isCompleted: boolean,

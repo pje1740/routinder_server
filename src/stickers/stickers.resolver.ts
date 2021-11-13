@@ -24,13 +24,13 @@ export class StickersResolver {
     return this.stickersService.findOne(id);
   }
 
-  @Query(() => [Sticker], { name: 'stickers' })
-  findByMonth(
+  @Query(() => [Sticker], { name: 'stickersByDate' })
+  findByDate(
     @Args('id', { type: () => Int }) id: number,
     @Args('after', { type: () => Date }) after: Date,
     @Args('before', { type: () => Date }) before: Date,
   ) {
-    return this.stickersService.findByMonth(id, after, before);
+    return this.stickersService.findByDate(id, after, before);
   }
   // @Mutation(() => Sticker)
   // updateSticker(@Args('updateStickerInput') updateStickerInput: UpdateStickerInput) {

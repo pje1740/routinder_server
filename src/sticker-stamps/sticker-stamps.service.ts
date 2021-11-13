@@ -25,7 +25,7 @@ export class StickerStampsService {
     return this.StickerStampsRepository.findOne(id);
   }
 
-  findByMonth(id: number, after?: Date, before?: Date) {
+  findByDate(id: number, after?: Date, before?: Date) {
     return this.StickerStampsRepository.createQueryBuilder('stamp')
       .innerJoinAndMapOne(
         'stamp.routine',

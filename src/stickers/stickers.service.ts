@@ -24,7 +24,7 @@ export class StickersService {
     return this.stickersRepository.findOne(id);
   }
 
-  findByMonth(id: number, after?: Date, before?: Date) {
+  findByDate(id: number, after?: Date, before?: Date) {
     return this.stickersRepository
       .createQueryBuilder('sticker')
       .innerJoinAndMapOne(
