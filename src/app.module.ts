@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { GraphQLModule } from '@nestjs/graphql';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { GraphQLModule } from '@nestjs/graphql';
-import { join } from 'path';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './users/users.module';
-import { ConfigModule } from '@nestjs/config';
 import { RoutinesModule } from './routines/routines.module';
-import { StickersModule } from './stickers/stickers.module';
 import { StickerStampsModule } from './sticker-stamps/sticker-stamps.module';
+import { StickersModule } from './stickers/stickers.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -17,7 +17,7 @@ import { StickerStampsModule } from './sticker-stamps/sticker-stamps.module';
     }),
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : 'env.prod',
+      envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env.prod',
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
