@@ -13,6 +13,11 @@ export class StickerStampsResolver {
   //   return this.stickerStampsService.create(createStickerStampInput);
   // }
 
+  @Mutation(() => StickerStamp)
+  test(@Args('id', { type: () => Int }) id: number) {
+    return this.stickerStampsService.test(id);
+  }
+
   @Query(() => [StickerStamp], { name: 'stickerStamps' })
   findAll() {
     return this.stickerStampsService.findAll();
@@ -32,7 +37,7 @@ export class StickerStampsResolver {
     return this.stickerStampsService.findByDate(id, after, before);
   }
 
-  @Mutation(() => StickerStamp, { name: 'stickerStampsUpdateRoutine' })
+  @Mutation(() => StickerStamp)
   updateRoutineCompleted(
     @Args('id', { type: () => Int }) id: number,
     @Args('isCompleted', { type: () => Boolean }) isCompleted: boolean,

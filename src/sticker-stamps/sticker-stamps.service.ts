@@ -1,11 +1,10 @@
-import { StickerStamp } from './entities/sticker-stamp.entity';
-import { Routine } from '../routines/entities/routine.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 // import { CreateStickerStampInput } from './dto/create-sticker-stamp.input';
 // import { UpdateStickerStampInput } from './dto/update-sticker-stamp.input';
 import { Repository } from 'typeorm';
-
+import { Routine } from '../routines/entities/routine.entity';
+import { StickerStamp } from './entities/sticker-stamp.entity';
 @Injectable()
 export class StickerStampsService {
   constructor(
@@ -16,6 +15,14 @@ export class StickerStampsService {
   // create(createStickerStampInput: CreateStickerStampInput) {
   //   return 'This action adds a new stickerStamp';
   // }
+
+  test(id: number) {
+    if (id === 1) {
+      throw new Error();
+    } else {
+      return this.StickerStampsRepository.find();
+    }
+  }
 
   findAll() {
     return this.StickerStampsRepository.find();
@@ -40,14 +47,20 @@ export class StickerStampsService {
   }
 
   updateRoutineCompleted(id: number, isCompleted: boolean) {
-    return this.StickerStampsRepository.createQueryBuilder()
-      .update('stamp')
-      .set({
-        isCompleted: isCompleted,
-        completedAt: isCompleted ? new Date() : null,
-      })
-      .where('id = :id', { id: id })
-      .execute();
+    try {
+      this.StickerStampsRepository.createQueryBuilder('sticker_stamp')
+        .update('sticker_stamp')
+        .set({
+          isCompleted: isCompleted,
+          completedAt: isCompleted ? new Date() : null,
+        })
+        .where('id = :id', { id: id })
+        .execute();
+      return this.StickerStampsRepository.findOne(id);
+    } catch (err) {
+      console.error(err);
+      return 'execution failed';
+    }
   }
   // update(id: number, updateStickerStampInput: UpdateStickerStampInput) {
   //   return `This action updates a #${id} stickerStamp`;
