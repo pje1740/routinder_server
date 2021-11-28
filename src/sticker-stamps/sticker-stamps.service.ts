@@ -27,8 +27,8 @@ export class StickerStampsService {
         'stamp.routineId = routine.id',
       )
       .where('routine.userId = :userId', { userId: id })
-      .andWhere('routine.startDate >= :start', { start: after })
-      .andWhere('routine.startDate < :end', { end: before })
+      .andWhere('stamp.when >= :start', { start: after })
+      .andWhere('stamp.when <= :end', { end: before })
       .getMany();
   }
 
