@@ -1,10 +1,8 @@
-import { StickerStamp } from './entities/sticker-stamp.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateStickerStampInput } from './dto/create-sticker-stamp.input';
-import { UpdateStickerStampInput } from './dto/update-sticker-stamp.input';
 import { Repository } from 'typeorm';
-
+import { Routine } from '../routines/entities/routine.entity';
+import { StickerStamp } from './entities/sticker-stamp.entity';
 @Injectable()
 export class StickerStampsService {
   constructor(
@@ -12,23 +10,37 @@ export class StickerStampsService {
     private StickerStampsRepository: Repository<StickerStamp>,
   ) {}
 
-  // create(createStickerStampInput: CreateStickerStampInput) {
-  //   return 'This action adds a new stickerStamp';
-  // }
-
-  findAll() {
-    return this.StickerStampsRepository.find();
+  async findAll() {
+    return await this.StickerStampsRepository.find();
   }
 
-  findOne(id: number) {
-    return this.StickerStampsRepository.findOne(id);
+  async findOne(id: number) {
+    return await this.StickerStampsRepository.findOne(id);
   }
 
-  // update(id: number, updateStickerStampInput: UpdateStickerStampInput) {
-  //   return `This action updates a #${id} stickerStamp`;
-  // }
+  async findByDate(id: number, after?: Date, before?: Date) {
+    return await this.StickerStampsRepository.createQueryBuilder('stamp')
+      .innerJoinAndMapOne(
+        'stamp.routine',
+        Routine,
+        'routine',
+        'stamp.routineId = routine.id',
+      )
+      .where('routine.userId = :userId', { userId: id })
+      .andWhere('stamp.when >= :start', { start: after })
+      .andWhere('stamp.when <= :end', { end: before })
+      .getMany();
+  }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} stickerStamp`;
-  // }
+  async updateRoutineCompleted(id: number, isCompleted: boolean) {
+    await this.StickerStampsRepository.createQueryBuilder('sticker_stamp')
+      .update('sticker_stamp')
+      .set({
+        isCompleted: isCompleted,
+        completedAt: isCompleted ? new Date() : null,
+      })
+      .where('id = :id', { id: id })
+      .execute();
+    return await this.StickerStampsRepository.findOne(id);
+  }
 }

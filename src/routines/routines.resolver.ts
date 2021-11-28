@@ -8,10 +8,12 @@ import { UpdateRoutineInput } from './dto/update-routine.input';
 export class RoutinesResolver {
   constructor(private readonly routinesService: RoutinesService) {}
 
-  // @Mutation(() => Routine)
-  // createRoutine(@Args('createRoutineInput') createRoutineInput: CreateRoutineInput) {
-  //   return this.routinesService.create(createRoutineInput);
-  // }
+  @Mutation(() => Routine)
+  createRoutine(
+    @Args('createRoutineInput') createRoutineInput: CreateRoutineInput,
+  ) {
+    return this.routinesService.create(createRoutineInput);
+  }
 
   @Query(() => [Routine], { name: 'routines' })
   findAll() {
@@ -23,10 +25,15 @@ export class RoutinesResolver {
     return this.routinesService.findOne(id);
   }
 
-  // @Mutation(() => Routine)
-  // updateRoutine(@Args('updateRoutineInput') updateRoutineInput: UpdateRoutineInput) {
-  //   return this.routinesService.update(updateRoutineInput.id, updateRoutineInput);
-  // }
+  @Mutation(() => Routine)
+  updateRoutine(
+    @Args('updateRoutineInput') updateRoutineInput: UpdateRoutineInput,
+  ) {
+    return this.routinesService.update(
+      updateRoutineInput.id,
+      updateRoutineInput,
+    );
+  }
 
   // @Mutation(() => Routine)
   // removeRoutine(@Args('id', { type: () => Int }) id: number) {

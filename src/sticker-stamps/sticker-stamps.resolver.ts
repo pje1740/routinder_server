@@ -1,17 +1,10 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { StickerStampsService } from './sticker-stamps.service';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { StickerStamp } from './entities/sticker-stamp.entity';
-import { CreateStickerStampInput } from './dto/create-sticker-stamp.input';
-import { UpdateStickerStampInput } from './dto/update-sticker-stamp.input';
+import { StickerStampsService } from './sticker-stamps.service';
 
 @Resolver(() => StickerStamp)
 export class StickerStampsResolver {
   constructor(private readonly stickerStampsService: StickerStampsService) {}
-
-  // @Mutation(() => StickerStamp)
-  // createStickerStamp(@Args('createStickerStampInput') createStickerStampInput: CreateStickerStampInput) {
-  //   return this.stickerStampsService.create(createStickerStampInput);
-  // }
 
   @Query(() => [StickerStamp], { name: 'stickerStamps' })
   findAll() {
@@ -23,13 +16,20 @@ export class StickerStampsResolver {
     return this.stickerStampsService.findOne(id);
   }
 
-  // @Mutation(() => StickerStamp)
-  // updateStickerStamp(@Args('updateStickerStampInput') updateStickerStampInput: UpdateStickerStampInput) {
-  //   return this.stickerStampsService.update(updateStickerStampInput.id, updateStickerStampInput);
-  // }
+  @Query(() => [StickerStamp], { name: 'stickerStampsByDate' })
+  findByDate(
+    @Args('id', { type: () => Int }) id: number,
+    @Args('after', { type: () => Date }) after: Date,
+    @Args('before', { type: () => Date }) before: Date,
+  ) {
+    return this.stickerStampsService.findByDate(id, after, before);
+  }
 
-  // @Mutation(() => StickerStamp)
-  // removeStickerStamp(@Args('id', { type: () => Int }) id: number) {
-  //   return this.stickerStampsService.remove(id);
-  // }
+  @Mutation(() => StickerStamp)
+  updateRoutineCompleted(
+    @Args('id', { type: () => Int }) id: number,
+    @Args('isCompleted', { type: () => Boolean }) isCompleted: boolean,
+  ) {
+    return this.stickerStampsService.updateRoutineCompleted(id, isCompleted);
+  }
 }

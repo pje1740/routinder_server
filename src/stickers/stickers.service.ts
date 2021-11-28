@@ -1,8 +1,9 @@
 import { Sticker } from './entities/sticker.entity';
+import { Routine } from '../routines/entities/routine.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateStickerInput } from './dto/create-sticker.input';
-import { UpdateStickerInput } from './dto/update-sticker.input';
+// import { CreateStickerInput } from './dto/create-sticker.input';
+// import { UpdateStickerInput } from './dto/update-sticker.input';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -23,6 +24,20 @@ export class StickersService {
     return this.stickersRepository.findOne(id);
   }
 
+  findByDate(id: number, after?: Date, before?: Date) {
+    return this.stickersRepository
+      .createQueryBuilder('sticker')
+      .innerJoinAndMapOne(
+        'sticker.routine',
+        Routine,
+        'routine',
+        'sticker.id = routine.stickerId',
+      )
+      .where('routine.userId = :userId', { userId: id })
+      .andWhere('routine.startDate >= :start', { start: after })
+      .andWhere('routine.startDate < :end', { end: before })
+      .getMany();
+  }
   // update(id: number, updateStickerInput: UpdateStickerInput) {
   //   return `This action updates a #${id} sticker`;
   // }

@@ -1,7 +1,6 @@
-import { StickerStamp } from './../../sticker-stamps/entities/sticker-stamp.entity';
-import { Sticker } from './../../stickers/entities/sticker.entity';
-import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { User } from 'src/users/entities/user.entity';
+import { StickerStamp } from './../../sticker-stamps/entities/sticker-stamp.entity';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 import {
   Column,
   Entity,
@@ -15,19 +14,24 @@ import {
 export class Routine {
   @PrimaryGeneratedColumn()
   @Field(() => Int)
-  @OneToMany(() => StickerStamp, (stickerStamp) => stickerStamp.routineId)
   id: number;
 
-  @Column()
-  @Field()
-  @ManyToOne(() => User, (user) => user.id)
-  userId: string;
+  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.routines)
+  user: User;
+
+  @Field(() => StickerStamp)
+  @OneToMany(() => StickerStamp, (stickerStamps) => stickerStamps.routine)
+  stickerStamps: StickerStamp;
 
   @Column()
   @Field()
   title: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   @Field()
   createdAt: Date;
 
@@ -45,6 +49,5 @@ export class Routine {
 
   @Column()
   @Field()
-  @ManyToOne(() => Sticker, (sticker) => sticker.id)
   stickerId: number;
 }

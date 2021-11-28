@@ -1,6 +1,6 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Routine } from 'src/routines/entities/routine.entity';
 import { User } from 'src/users/entities/user.entity';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -10,17 +10,15 @@ export class StickerStamp {
   @Field(() => Int)
   id: number;
 
-  @Column()
-  @Field()
-  @ManyToOne(() => User, (user) => user.id)
-  userId: string;
+  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.stickerStamps)
+  user: User;
 
-  @Column()
-  @Field()
-  @ManyToOne(() => Routine, (routine) => routine.id)
-  routineId: string;
+  @Field(() => Routine)
+  @ManyToOne(() => Routine, (routine) => routine.stickerStamps)
+  routine: Routine;
 
-  @Column()
+  @Column({ default: false })
   @Field()
   isCompleted: boolean;
 
@@ -28,7 +26,7 @@ export class StickerStamp {
   @Field()
   when: Date;
 
-  @Column({ type: 'timestamp' })
-  @Field()
+  @Column({ type: 'timestamp', default: null })
+  @Field({ nullable: true })
   completedAt: Date;
 }

@@ -8,9 +8,15 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 export class User {
   @PrimaryGeneratedColumn()
   @Field(() => Int)
-  @OneToMany(() => Routine, (routine) => routine.userId)
-  @OneToMany(() => StickerStamp, (stickerStamp) => stickerStamp.userId)
   id: number;
+
+  @Field(() => [Routine], { nullable: true })
+  @OneToMany(() => Routine, (routine) => routine.user)
+  routines: Routine[];
+
+  @Field(() => [StickerStamp], { nullable: true })
+  @OneToMany(() => StickerStamp, (stickerStamp) => stickerStamp.routine)
+  stickerStamps: StickerStamp[];
 
   @Column()
   @Field()
