@@ -7,10 +7,6 @@ import {
   Logger,
 } from '@nestjs/common';
 
-/**
- * HTTP exception 을 받아서 처리합니다.
- * Client 에 전달할 예외처리를 표준화 할 수 있습니다.
- */
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   private readonly logger: Logger = new Logger(this.constructor.name);
@@ -25,10 +21,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    response.status(status).json({
-      statusCode: status,
-      timestamp: new Date().toISOString(),
-      path: request.url,
-    });
+    // response.status(status).json({
+    //   statusCode: status,
+    //   timestamp: new Date().toISOString(),
+    //   path: request.url,
+    // });
   }
 }

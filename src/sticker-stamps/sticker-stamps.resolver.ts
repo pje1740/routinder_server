@@ -1,22 +1,10 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { StickerStamp } from './entities/sticker-stamp.entity';
 import { StickerStampsService } from './sticker-stamps.service';
-// import { CreateStickerStampInput } from './dto/create-sticker-stamp.input';
-// import { UpdateStickerStampInput } from './dto/update-sticker-stamp.input';
 
 @Resolver(() => StickerStamp)
 export class StickerStampsResolver {
   constructor(private readonly stickerStampsService: StickerStampsService) {}
-
-  // @Mutation(() => StickerStamp)
-  // createStickerStamp(@Args('createStickerStampInput') createStickerStampInput: CreateStickerStampInput) {
-  //   return this.stickerStampsService.create(createStickerStampInput);
-  // }
-
-  @Mutation(() => StickerStamp)
-  test(@Args('id', { type: () => Int }) id: number) {
-    return this.stickerStampsService.test(id);
-  }
 
   @Query(() => [StickerStamp], { name: 'stickerStamps' })
   findAll() {
@@ -44,14 +32,4 @@ export class StickerStampsResolver {
   ) {
     return this.stickerStampsService.updateRoutineCompleted(id, isCompleted);
   }
-
-  // @Mutation(() => StickerStamp)
-  // updateStickerStamp(@Args('updateStickerStampInput') updateStickerStampInput: UpdateStickerStampInput) {
-  //   return this.stickerStampsService.update(updateStickerStampInput.id, updateStickerStampInput);
-  // }
-
-  // @Mutation(() => StickerStamp)
-  // removeStickerStamp(@Args('id', { type: () => Int }) id: number) {
-  //   return this.stickerStampsService.remove(id);
-  // }
 }

@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-// import { CreateStickerStampInput } from './dto/create-sticker-stamp.input';
-// import { UpdateStickerStampInput } from './dto/update-sticker-stamp.input';
 import { Repository } from 'typeorm';
 import { Routine } from '../routines/entities/routine.entity';
 import { StickerStamp } from './entities/sticker-stamp.entity';
@@ -12,28 +10,16 @@ export class StickerStampsService {
     private StickerStampsRepository: Repository<StickerStamp>,
   ) {}
 
-  // create(createStickerStampInput: CreateStickerStampInput) {
-  //   return 'This action adds a new stickerStamp';
-  // }
-
-  test(id: number) {
-    if (id === 1) {
-      throw new Error();
-    } else {
-      return this.StickerStampsRepository.find();
-    }
+  async findAll() {
+    return await this.StickerStampsRepository.find();
   }
 
-  findAll() {
-    return this.StickerStampsRepository.find();
+  async findOne(id: number) {
+    return await this.StickerStampsRepository.findOne(id);
   }
 
-  findOne(id: number) {
-    return this.StickerStampsRepository.findOne(id);
-  }
-
-  findByDate(id: number, after?: Date, before?: Date) {
-    return this.StickerStampsRepository.createQueryBuilder('stamp')
+  async findByDate(id: number, after?: Date, before?: Date) {
+    return await this.StickerStampsRepository.createQueryBuilder('stamp')
       .innerJoinAndMapOne(
         'stamp.routine',
         Routine,
@@ -46,27 +32,15 @@ export class StickerStampsService {
       .getMany();
   }
 
-  updateRoutineCompleted(id: number, isCompleted: boolean) {
-    try {
-      this.StickerStampsRepository.createQueryBuilder('sticker_stamp')
-        .update('sticker_stamp')
-        .set({
-          isCompleted: isCompleted,
-          completedAt: isCompleted ? new Date() : null,
-        })
-        .where('id = :id', { id: id })
-        .execute();
-      return this.StickerStampsRepository.findOne(id);
-    } catch (err) {
-      console.error(err);
-      return 'execution failed';
-    }
+  async updateRoutineCompleted(id: number, isCompleted: boolean) {
+    await this.StickerStampsRepository.createQueryBuilder('sticker_stamp')
+      .update('sticker_stamp')
+      .set({
+        isCompleted: isCompleted,
+        completedAt: isCompleted ? new Date() : null,
+      })
+      .where('id = :id', { id: id })
+      .execute();
+    return await this.StickerStampsRepository.findOne(id);
   }
-  // update(id: number, updateStickerStampInput: UpdateStickerStampInput) {
-  //   return `This action updates a #${id} stickerStamp`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} stickerStamp`;
-  // }
 }
