@@ -7,7 +7,9 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 export class Sticker {
   @PrimaryGeneratedColumn()
   @Field(() => Int)
-  @OneToMany(() => Routine, (routine) => routine.stickerId)
+  @OneToMany(() => Routine, (routine) => routine.stickerId, {
+    cascade: true,
+  })
   id: number;
 
   @Column()

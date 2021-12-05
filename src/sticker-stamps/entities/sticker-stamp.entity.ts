@@ -1,6 +1,6 @@
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Routine } from 'src/routines/entities/routine.entity';
 import { User } from 'src/users/entities/user.entity';
-import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -11,11 +11,13 @@ export class StickerStamp {
   id: number;
 
   @Field(() => User)
-  @ManyToOne(() => User, (user) => user.stickerStamps)
+  @ManyToOne(() => User, (user) => user.stickerStamps, { onDelete: 'CASCADE' })
   user: User;
 
   @Field(() => Routine)
-  @ManyToOne(() => Routine, (routine) => routine.stickerStamps)
+  @ManyToOne(() => Routine, (routine) => routine.stickerStamps, {
+    onDelete: 'CASCADE',
+  })
   routine: Routine;
 
   @Column({ default: false })
