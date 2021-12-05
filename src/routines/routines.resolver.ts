@@ -1,8 +1,8 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { RoutinesService } from './routines.service';
-import { Routine } from './entities/routine.entity';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateRoutineInput } from './dto/create-routine.input';
 import { UpdateRoutineInput } from './dto/update-routine.input';
+import { Routine } from './entities/routine.entity';
+import { RoutinesService } from './routines.service';
 
 @Resolver(() => Routine)
 export class RoutinesResolver {
@@ -35,8 +35,8 @@ export class RoutinesResolver {
     );
   }
 
-  // @Mutation(() => Routine)
-  // removeRoutine(@Args('id', { type: () => Int }) id: number) {
-  //   return this.routinesService.remove(id);
-  // }
+  @Mutation(() => Routine)
+  removeRoutine(@Args('id', { type: () => Int }) id: number) {
+    return this.routinesService.remove(id);
+  }
 }

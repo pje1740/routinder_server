@@ -1,9 +1,9 @@
-import { Routine } from 'src/routines/entities/routine.entity';
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Routine } from 'src/routines/entities/routine.entity';
+import { Repository } from 'typeorm';
 import { CreateRoutineInput } from './dto/create-routine.input';
 import { UpdateRoutineInput } from './dto/update-routine.input';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class RoutinesService {
@@ -13,7 +13,6 @@ export class RoutinesService {
 
   create(createRoutineInput: CreateRoutineInput): Promise<Routine> {
     const newRoutine = this.routinesRepository.create(createRoutineInput);
-
     return this.routinesRepository.save(newRoutine);
   }
 
@@ -36,7 +35,11 @@ export class RoutinesService {
     return this.routinesRepository.findOne(id);
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} routine`;
-  // }
+  async remove(id: number) {
+    const routine = await this.routinesRepository.findOne(id);
+    if (routine === undefined) return new Error('Routine does not exist');
+    const data = { id };
+    await this.routinesRepository.remove(routine);
+    return data;
+  }
 }
