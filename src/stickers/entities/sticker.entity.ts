@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Routine } from 'src/routines/entities/routine.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -7,9 +7,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 export class Sticker {
   @PrimaryGeneratedColumn()
   @Field(() => Int)
-  @OneToMany(() => Routine, (routine) => routine.stickerId, {
-    cascade: true,
-  })
+  @OneToMany(() => Routine, (routine) => routine.stickerId)
   id: number;
 
   @Column()
