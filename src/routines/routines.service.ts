@@ -11,23 +11,24 @@ export class RoutinesService {
     @InjectRepository(Routine) private routinesRepository: Repository<Routine>,
   ) {}
 
+  dateFormatter = (date: Date) => {
+    const year = date.getFullYear();
+    const month = `0${date.getMonth() + 1}`.slice(-2);
+    const day = `0${date.getDate()}`.slice(-2);
+
+    const dateString = `${year}-${month}-${day}`;
+
+    return dateString;
+  };
+
   validateDate(routine: Routine) {
     if (
-      routine.startDate.getTime() < new Date().getTime() ||
+      this.dateFormatter(routine.startDate) !==
+        this.dateFormatter(new Date()) ||
       routine.startDate.getTime() >
         new Date().getTime() + 1000 * 60 * 60 * 24 * 365
     )
       return new Error('Invalid StartDate');
-    if (
-      routine.endDate.getTime() <
-        routine.startDate.getTime() + 1000 * 60 * 60 * 24 * 7 ||
-      routine.endDate.getTime() >
-        routine.startDate.getTime() + 1000 * 60 * 60 * 24 * 90
-    )
-      return new Error('Invalid EndDate');
-    const regExp = /^[0]{0,1}[1]{0,1}[2]{0,1}[3]{0,1}[4]{0,1}[5]{0,1}[6]{0,1}$/;
-    if (!routine.days || !routine.days.match(regExp))
-      return new Error('Invalid Days');
   }
 
   create(createRoutineInput: CreateRoutineInput): Promise<Routine> {
