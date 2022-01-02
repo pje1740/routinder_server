@@ -29,6 +29,16 @@ export class RoutinesService {
         new Date().getTime() + 1000 * 60 * 60 * 24 * 365
     )
       return new Error('Invalid StartDate');
+    if (
+      routine.endDate.getTime() <
+        routine.startDate.getTime() + 1000 * 60 * 60 * 24 * 7 ||
+      routine.endDate.getTime() >
+        routine.startDate.getTime() + 1000 * 60 * 60 * 24 * 90
+    )
+      return new Error('Invalid EndDate');
+    const regExp = /^[0]{0,1}[1]{0,1}[2]{0,1}[3]{0,1}[4]{0,1}[5]{0,1}[6]{0,1}$/;
+    if (!routine.days || !routine.days.match(regExp))
+      return new Error('Invalid Days');
   }
 
   create(createRoutineInput: CreateRoutineInput): Promise<Routine> {
