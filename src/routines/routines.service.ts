@@ -60,7 +60,7 @@ export class RoutinesService {
   async remove(id: number) {
     const routine = await this.routinesRepository.findOne(id);
     if (routine === undefined) return new Error('Routine does not exist');
-    const data = { id };
+    const data = { ...routine };
     await this.routinesRepository.remove(routine);
     return data;
   }
