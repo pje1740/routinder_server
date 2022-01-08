@@ -11,20 +11,9 @@ export class RoutinesService {
     @InjectRepository(Routine) private routinesRepository: Repository<Routine>,
   ) {}
 
-  dateFormatter = (date: Date) => {
-    const year = date.getFullYear();
-    const month = `0${date.getMonth() + 1}`.slice(-2);
-    const day = `0${date.getDate()}`.slice(-2);
-
-    const dateString = `${year}-${month}-${day}`;
-
-    return dateString;
-  };
-
   validateDate(routine: Routine) {
     if (
-      this.dateFormatter(routine.startDate) !==
-        this.dateFormatter(new Date()) ||
+      routine.startDate.getTime() + 1000 * 60 * 10 < new Date().getTime() ||
       routine.startDate.getTime() >
         new Date().getTime() + 1000 * 60 * 60 * 24 * 365
     )
