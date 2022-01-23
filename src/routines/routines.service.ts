@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Routine } from 'src/routines/entities/routine.entity';
 import { Repository } from 'typeorm';
+import { StickerStampsService } from '../sticker-stamps/sticker-stamps.service';
 import { CreateRoutineInput } from './dto/create-routine.input';
 import { UpdateRoutineInput } from './dto/update-routine.input';
 
@@ -9,6 +10,7 @@ import { UpdateRoutineInput } from './dto/update-routine.input';
 export class RoutinesService {
   constructor(
     @InjectRepository(Routine) private routinesRepository: Repository<Routine>,
+    private stickerStampsService: StickerStampsService,
   ) {}
 
   validateDate(routine: Routine) {
@@ -30,11 +32,13 @@ export class RoutinesService {
       return new Error('Invalid Days');
   }
 
-  create(createRoutineInput: CreateRoutineInput): Promise<Routine> {
+  async create(createRoutineInput: CreateRoutineInput): Promise<Routine> {
     const newRoutine = this.routinesRepository.create(createRoutineInput);
     if (this.validateDate(newRoutine) instanceof Error)
       throw new Error(this.validateDate(newRoutine).message);
-    return this.routinesRepository.save(newRoutine);
+    const savedRoutine = await this.routinesRepository.save(newRoutine);
+    this.stickerStampsService.create(savedRoutine);
+    return savedRoutine;
   }
 
   findAll(): Promise<Routine[]> {
