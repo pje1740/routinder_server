@@ -8,13 +8,13 @@
 
 ## Description
 
-루틴더는 스티커로 습관을 관리하고 트래킹하는 웹앱 서비스입니다. 본 레포는 루틴더 서비스의 서버 코드를 위한 레포입니다. 
+루틴더는 스티커로 습관을 관리하고 트래킹하는 웹앱 서비스입니다. 본 레포는 루틴더 서비스의 서버 코드를 위한 레포입니다.
 
 ## Installation
 
 기본적인 라이브러리 설치
 ```bash
-$ npm install
+$ yarn install
 ```
 
 ## 개발 DB 실행
@@ -32,26 +32,9 @@ $ bash clean.sh
 ## Running the app
 
 ```bash
+$ yarn start
+
 # development
-$ npm run start
+$ yarn start:dev
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-

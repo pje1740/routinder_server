@@ -1,13 +1,14 @@
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { User } from 'src/users/entities/user.entity';
-import { StickerStamp } from './../../sticker-stamps/entities/sticker-stamp.entity';
-import { ObjectType, Field, Int } from '@nestjs/graphql';
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { StickerStamp } from './../../sticker-stamps/entities/sticker-stamp.entity';
 
 @Entity()
 @ObjectType()
@@ -16,12 +17,15 @@ export class Routine {
   @Field(() => Int)
   id: number;
 
+  @JoinColumn({ name: 'userId' })
   @Field(() => User)
-  @ManyToOne(() => User, (user) => user.routines)
-  user: User;
+  @ManyToOne(() => User, (user) => user.routines, { onDelete: 'CASCADE' })
+  userId: User;
 
   @Field(() => StickerStamp)
-  @OneToMany(() => StickerStamp, (stickerStamps) => stickerStamps.routine)
+  @OneToMany(() => StickerStamp, (stickerStamps) => stickerStamps.routineId, {
+    cascade: true,
+  })
   stickerStamps: StickerStamp;
 
   @Column()

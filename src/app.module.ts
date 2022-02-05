@@ -28,6 +28,7 @@ import { UsersModule } from './users/users.module';
       database: process.env.DB_NAME,
       entities: [__dirname + '/**/*.entity.{ts,js}'],
       synchronize: true,
+      logging: true,
     }),
     UsersModule,
     RoutinesModule,
