@@ -11,13 +11,13 @@ export class User {
   id: number;
 
   @Field(() => [Routine], { nullable: true })
-  @OneToMany(() => Routine, (routine) => routine.user, {
+  @OneToMany(() => Routine, (routine) => routine.userId, {
     cascade: true,
   })
   routines: Routine[];
 
   @Field(() => [StickerStamp], { nullable: true })
-  @OneToMany(() => StickerStamp, (stickerStamp) => stickerStamp.routine, {
+  @OneToMany(() => StickerStamp, (stickerStamp) => stickerStamp.routineId, {
     cascade: true,
   })
   stickerStamps: StickerStamp[];

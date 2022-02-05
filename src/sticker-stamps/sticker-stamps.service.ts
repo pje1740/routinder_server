@@ -132,17 +132,13 @@ export class StickerStampsService {
       stampsInfo.push(stampInfo);
       strtIdx++;
     }
-    console.log(userId, id);
-    console.log(stampsInfo);
+
     await this.StickerStampsRepository.createQueryBuilder()
       .insert()
       .into('sticker_stamp')
       .values(stampsInfo)
       .execute();
-    // const result = await this.StickerStampsRepository.query(
-    //   `INSERT INTO sticker_stamp (userId, routineId, when) VALUES ('2', '36', '2022-01-23 19:09:39');`,
-    // );
-    // console.log(result);
+
     console.log('StickerStamps Successfully created');
   }
 }
