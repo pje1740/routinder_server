@@ -75,7 +75,7 @@ export class StickerStampsService {
     return interval;
   }
 
-  async create(routine: Routine) {
+  daysToStickerStamp(routine: Routine) {
     //startDate 랑 endDate로 일자계산해서 [{ userId: 1, routineId: 1, when: 2021-02-01 00:00:00 }, ..]
     const { userId, id, startDate, endDate, days } = { ...routine };
     let startTim = startDate.getTime();
@@ -94,6 +94,9 @@ export class StickerStampsService {
     while (strtIdx < daysToNum.length) {
       if (today < daysToNum[strtIdx]) {
         interval.push(daysToNum[strtIdx] - today);
+        break;
+      } else if (today === daysToNum[strtIdx]) {
+        interval.push(0);
         break;
       }
       strtIdx++;
@@ -132,6 +135,12 @@ export class StickerStampsService {
       stampsInfo.push(stampInfo);
       strtIdx++;
     }
+    console.log(stampsInfo);
+    return stampsInfo;
+  }
+
+  async create(routine: Routine) {
+    const stampsInfo = this.daysToStickerStamp(routine);
 
     await this.StickerStampsRepository.createQueryBuilder()
       .insert()
@@ -140,5 +149,22 @@ export class StickerStampsService {
       .execute();
 
     console.log('StickerStamps Successfully created');
+  }
+
+  async update(routine: Routine) {
+    const { id } = { ...routine };
+    const stampsInfo = this.daysToStickerStamp(routine);
+    await this.StickerStampsRepository.createQueryBuilder()
+      .delete()
+      .from('sticker_stamp')
+      .where('routineId = :routineId', { routineId: id })
+      .execute();
+    await this.StickerStampsRepository.createQueryBuilder()
+      .insert()
+      .into('sticker_stamp')
+      .values(stampsInfo)
+      .execute();
+
+    console.log('StickerStamps Successfully updated');
   }
 }
