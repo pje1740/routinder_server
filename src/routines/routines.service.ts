@@ -46,21 +46,16 @@ export class RoutinesService {
   }
 
   findOne(id: number) {
-    return this.routinesRepository.findOne(id);
-  }
-
-  async findRoutine(id: number) {
-    const routine = await this.routinesRepository.query(
-      `SELECT * FROM routinder.routine WHERE id=${id}`,
-    );
-    return routine[0];
+    return this.routinesRepository.findOne(id, {
+      relations: ['user', 'stickerStamps'],
+    });
   }
 
   async update(
     id: number,
     updateRoutineInput: UpdateRoutineInput,
   ): Promise<Routine> {
-    let routine = await this.findRoutine(id);
+    let routine = await this.findOne(id);
     routine = { ...routine, ...updateRoutineInput };
     if (this.validateDate(routine) instanceof Error)
       throw new Error(this.validateDate(routine).message);
