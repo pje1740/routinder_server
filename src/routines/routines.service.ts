@@ -47,7 +47,7 @@ export class RoutinesService {
 
   findOne(id: number) {
     return this.routinesRepository.findOne(id, {
-      relations: ['user', 'stickerStamps'],
+      relations: ['user'],
     });
   }
 

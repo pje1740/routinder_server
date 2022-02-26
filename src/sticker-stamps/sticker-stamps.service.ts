@@ -21,12 +21,12 @@ export class StickerStampsService {
   async findByDate(id: number, after?: Date, before?: Date) {
     return await this.StickerStampsRepository.createQueryBuilder('stamp')
       .innerJoinAndMapOne(
-        'stamp.routine',
+        'stamp.routineId',
         Routine,
-        'routine',
-        'stamp.routineId = routine.id',
+        'routineId',
+        'stamp.routineId = routineId.id',
       )
-      .where('routine.userId = :userId', { userId: id })
+      .where('routineId.userId = :userId', { userId: id })
       .andWhere('stamp.when >= :start', { start: after })
       .andWhere('stamp.when <= :end', { end: before })
       .getMany();
