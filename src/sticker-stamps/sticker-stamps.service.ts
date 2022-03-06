@@ -48,7 +48,7 @@ export class StickerStampsService {
     const { user, id, startDate, endDate, days } = { ...routine };
     let startTim = startDate.getTime();
     const endTim = endDate.getTime();
-    const stampsInfo = [];
+    const stamps = [];
 
     const today = startDate.getDay();
     const standard = [0, 1, 2, 3, 4, 5, 6]; //[0 일,1 월,2 화,3 수,4 목,5 금,6 토]
@@ -93,12 +93,12 @@ export class StickerStampsService {
 
     //4. 시작날짜 세팅해주고 첫 인덱스는 삭제
     startTim += 1000 * 60 * 60 * 24 * interval[0];
-    const stampInfo = {
+    const stamp = {
       userId: user.id,
       routineId: id,
       when: new Date(startTim),
     };
-    stampsInfo.push(stampInfo);
+    stamps.push(stamp);
     interval.shift();
 
     //5. 일자간격 더해주면서 스티커스탬프 생성, strtIdx 가 interval.length 이면 0으로 초기화
@@ -108,33 +108,31 @@ export class StickerStampsService {
       }
       startTim += 1000 * 60 * 60 * 24 * interval[strtIdx];
       const startDate = new Date(startTim);
-      const stampInfo = {
+      const stamp = {
         userId: user.id,
         routineId: id,
         when: startDate,
       };
-      stampsInfo.push(stampInfo);
+      stamps.push(stamp);
       strtIdx++;
     }
-    console.log(stampsInfo);
-    return stampsInfo;
+
+    return stamps;
   }
 
   async create(routine: Routine) {
-    const stampsInfo = this.daysToStickerStamp(routine);
+    const stamps = this.daysToStickerStamp(routine);
 
     await this.StickerStampsRepository.createQueryBuilder()
       .insert()
       .into('sticker_stamp')
-      .values(stampsInfo)
+      .values(stamps)
       .execute();
-
-    console.log('StickerStamps Successfully created');
   }
 
   async update(routine: Routine) {
     const { id } = { ...routine };
-    const stampsInfo = this.daysToStickerStamp(routine);
+    const stamps = this.daysToStickerStamp(routine);
     await this.StickerStampsRepository.createQueryBuilder()
       .delete()
       .from('sticker_stamp')
@@ -143,9 +141,7 @@ export class StickerStampsService {
     await this.StickerStampsRepository.createQueryBuilder()
       .insert()
       .into('sticker_stamp')
-      .values(stampsInfo)
+      .values(stamps)
       .execute();
-
-    console.log('StickerStamps Successfully updated');
   }
 }
