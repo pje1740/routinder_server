@@ -11,7 +11,7 @@ export class User {
   id: number;
 
   @Field(() => [Routine], { nullable: true })
-  @OneToMany(() => Routine, (routine) => routine.userId, {
+  @OneToMany(() => Routine, (routine) => routine.user, {
     cascade: true,
   })
   routines: Routine[];
