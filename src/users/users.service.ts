@@ -17,4 +17,12 @@ export class UsersService {
       relations: ['routines', 'stickerStamps'],
     });
   }
+
+  async findByEmail(email: string) {
+    return this.usersRepository.findOne(email);
+  }
+
+  async save(user: User) {
+    return this.usersRepository.save(user);
+  }
 }

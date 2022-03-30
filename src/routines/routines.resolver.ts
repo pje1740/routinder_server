@@ -15,6 +15,7 @@ export class RoutinesResolver {
     return this.routinesService.create(createRoutineInput);
   }
 
+  // @UseGuards(GqlAuthGuard)
   @Query(() => [Routine], { name: 'routines' })
   findAll() {
     return this.routinesService.findAll();

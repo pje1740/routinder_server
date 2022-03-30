@@ -15,4 +15,9 @@ export class UsersResolver {
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.usersService.findOne(id);
   }
+
+  // @Query(() => User, { name: 'email' })
+  // findByEmail(@Args('email', { type: () => Int }) email: string) {
+  //   return this.usersService.findByEmail(email);
+  // }
 }

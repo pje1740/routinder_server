@@ -6,7 +6,7 @@ import { StickerStamp } from './../../sticker-stamps/entities/sticker-stamp.enti
 @Entity()
 @ObjectType()
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   @Field(() => Int)
   id: number;
 
@@ -25,4 +25,8 @@ export class User {
   @Column()
   @Field()
   username: string;
+
+  @Column()
+  @Field()
+  email: string;
 }

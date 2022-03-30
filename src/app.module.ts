@@ -5,15 +5,26 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { GqlAuthGuard } from './auth/gql-auth-guard.service';
 import { RoutinesModule } from './routines/routines.module';
 import { StickerStampsModule } from './sticker-stamps/sticker-stamps.module';
 import { StickersModule } from './stickers/stickers.module';
 import { UsersModule } from './users/users.module';
+import { OauthModule } from './oauth/oauth.module';
 
 @Module({
   imports: [
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      context: ({ req, connection }) => {
+        if (req) {
+          const user = req.headers.authorization;
+          return { ...req, user };
+        } else {
+          return connection;
+        }
+      },
     }),
     ConfigModule.forRoot({
       isGlobal: true,
@@ -30,12 +41,14 @@ import { UsersModule } from './users/users.module';
       synchronize: true,
       logging: true,
     }),
+    AuthModule,
     UsersModule,
     RoutinesModule,
     StickersModule,
     StickerStampsModule,
+    OauthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, GqlAuthGuard],
 })
 export class AppModule {}
