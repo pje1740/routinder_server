@@ -6,8 +6,9 @@ export class OauthController {
   constructor(private readonly oauthService: OauthService) {}
 
   @Post('github')
-  async githubLogin(@Body() code: string): Promise<string> {
-    const jwtToken = this.oauthService.githubLogin(code);
+  async githubLogin(@Body() body): Promise<string> {
+    const { data } = body;
+    const jwtToken = this.oauthService.githubLogin(data.code);
     return jwtToken;
   }
 }
