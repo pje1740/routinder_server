@@ -45,6 +45,7 @@ export class OauthService {
         this.usersService.save(user);
       }
       const payload = { username: login, sub: email };
+      // console.log(this.jwtService.sign(payload));
       return this.jwtService.sign(payload);
     }
     return '401 Unauthorized';

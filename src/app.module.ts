@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
 import { GqlAuthGuard } from './auth/gql-auth-guard.service';
 import { RoutinesModule } from './routines/routines.module';
 import { StickerStampsModule } from './sticker-stamps/sticker-stamps.module';
@@ -41,7 +40,6 @@ import { OauthModule } from './oauth/oauth.module';
       synchronize: true,
       logging: true,
     }),
-    AuthModule,
     UsersModule,
     RoutinesModule,
     StickersModule,
