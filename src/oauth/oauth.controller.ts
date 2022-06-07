@@ -11,4 +11,12 @@ export class OauthController {
     const jwtToken = this.oauthService.githubLogin(data.code);
     return jwtToken;
   }
+
+  @Post('google')
+  async googleLogin(@Body() body): Promise<{ token: string }> {
+    const { data } = body;
+    console.log(data.code);
+    const jwtToken = this.oauthService.googleLogin(data.code);
+    return { token: 'hello' };
+  }
 }

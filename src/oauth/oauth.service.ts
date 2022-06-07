@@ -7,7 +7,10 @@ import { UsersService } from '../users/users.service';
 const GITHUB_ACCESS_TOKEN_URL = 'https://github.com/login/oauth/access_token';
 const GITHUB_USER_URL = 'https://api.github.com/user';
 const REDIRECT_URI = 'http://localhost:3000';
-
+const GOOGLE_ACCESS_TOKEN_URL = 'https://oauth2.googleapis.com/token';
+// const GOOGLE_USER_URL = 'https://www.googleapis.com/auth/userinfo.email';
+const GOOGLE_USER_URL = 'https://www.googleapis.com/drive/v2/files';
+const GOOGLE_REDIRECT_URI = 'http://localhost:3000/login-callback';
 @Injectable()
 export class OauthService {
   constructor(
@@ -18,8 +21,8 @@ export class OauthService {
   async githubLogin(code: string) {
     try {
       const { data } = await axios.post(GITHUB_ACCESS_TOKEN_URL, {
-        client_id: process.env.CLIENT_ID,
-        client_secret: process.env.CLIENT_SECRET,
+        client_id: process.env.GH_CLIENT_ID,
+        client_secret: process.env.GH_CLIENT_SECRET,
         code,
         redirect_uri: REDIRECT_URI,
       });
@@ -49,6 +52,22 @@ export class OauthService {
         return { token: this.jwtService.sign(payload) };
       }
     } catch (e) {
+      return { token: null };
+    }
+  }
+
+  async googleLogin(code: string) {
+    try {
+      let data;
+      const ACCESS_TOKEN_URL = `${GOOGLE_ACCESS_TOKEN_URL}?code=${code}&client_id=${process.env.GGL_CLIENT_ID}&client_secret=${process.env.GGL_CLIENT_SECRET}&redirect_uri=${GOOGLE_REDIRECT_URI}&grant_type=authorization_code`;
+      ({ data } = await axios.post(ACCESS_TOKEN_URL));
+      const config = {
+        headers: { Authorization: `Bearer ${data.access_token}` },
+      };
+      ({ data } = await axios.get(GOOGLE_USER_URL, config));
+      console.log(data);
+    } catch (e) {
+      console.log(e);
       return { token: null };
     }
   }
