@@ -7,10 +7,8 @@ import { UsersService } from '../users/users.service';
 const GITHUB_ACCESS_TOKEN_URL = 'https://github.com/login/oauth/access_token';
 const GITHUB_USER_URL = 'https://api.github.com/user';
 const REDIRECT_URI = 'http://localhost:3000';
-const GOOGLE_ACCESS_TOKEN_URL = 'https://oauth2.googleapis.com/token';
-// const GOOGLE_USER_URL = 'https://www.googleapis.com/auth/userinfo.email';
-const GOOGLE_USER_URL = 'https://www.googleapis.com/drive/v2/files';
-const GOOGLE_REDIRECT_URI = 'http://localhost:3000/login-callback';
+const GOOGLE_ACCESS_TOKEN_URL = 'https://accounts.google.com/o/oauth2/token';
+const GOOGLE_REDIRECT_URI = 'http://localhost:3000/ggl-login-callback';
 @Injectable()
 export class OauthService {
   constructor(
@@ -37,6 +35,7 @@ export class OauthService {
         const { login, email } = data; //email 비공개 설정이면 null 이다.
 
         const isUserExist = await this.usersService.findByUsername(login);
+
         if (isUserExist === undefined) {
           //회원정보 저장
           const user: User = {
@@ -52,20 +51,36 @@ export class OauthService {
         return { token: this.jwtService.sign(payload) };
       }
     } catch (e) {
+      console.log(e);
       return { token: null };
     }
   }
 
   async googleLogin(code: string) {
     try {
-      let data;
       const ACCESS_TOKEN_URL = `${GOOGLE_ACCESS_TOKEN_URL}?code=${code}&client_id=${process.env.GGL_CLIENT_ID}&client_secret=${process.env.GGL_CLIENT_SECRET}&redirect_uri=${GOOGLE_REDIRECT_URI}&grant_type=authorization_code`;
-      ({ data } = await axios.post(ACCESS_TOKEN_URL));
-      const config = {
-        headers: { Authorization: `Bearer ${data.access_token}` },
-      };
-      ({ data } = await axios.get(GOOGLE_USER_URL, config));
-      console.log(data);
+      const { data } = await axios.post(ACCESS_TOKEN_URL);
+
+      const userInfo = this.jwtService.decode(data.id_token);
+      const email = userInfo['email'];
+
+      if (email) {
+        const isUserExist = await this.usersService.findByUsername(email);
+
+        if (isUserExist === undefined) {
+          //회원정보 저장
+          const user: User = {
+            id: null,
+            routines: null,
+            stickerStamps: null,
+            username: email,
+            email,
+          };
+          this.usersService.save(user);
+        }
+        const payload = { username: email, sub: email };
+        return { token: this.jwtService.sign(payload) };
+      }
     } catch (e) {
       console.log(e);
       return { token: null };

@@ -15,8 +15,7 @@ export class OauthController {
   @Post('google')
   async googleLogin(@Body() body): Promise<{ token: string }> {
     const { data } = body;
-    console.log(data.code);
     const jwtToken = this.oauthService.googleLogin(data.code);
-    return { token: 'hello' };
+    return jwtToken;
   }
 }
