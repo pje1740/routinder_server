@@ -44,6 +44,7 @@ export class OauthService {
             stickerStamps: null,
             username: login,
             email,
+            oauth: 'github',
           };
           this.usersService.save(user);
         }
@@ -75,6 +76,7 @@ export class OauthService {
             stickerStamps: null,
             username: email,
             email,
+            oauth: 'google',
           };
           this.usersService.save(user);
         }

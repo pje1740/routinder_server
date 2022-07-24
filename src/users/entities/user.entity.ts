@@ -29,4 +29,8 @@ export class User {
   @Column()
   @Field()
   email: string;
+
+  @Column()
+  @Field()
+  oauth: string;
 }
