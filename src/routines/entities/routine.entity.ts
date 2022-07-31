@@ -3,6 +3,7 @@ import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -16,9 +17,10 @@ export class Routine {
   @Field(() => Int)
   id: number;
 
+  @JoinColumn({ name: 'userId' })
   @Field(() => User)
-  @ManyToOne(() => User, (user) => user.routines, { onDelete: 'CASCADE' })
-  user: User;
+  @ManyToOne(() => User, (user) => user.stickerStamps, { onDelete: 'CASCADE' })
+  userId: User;
 
   @Field(() => StickerStamp)
   @OneToMany(() => StickerStamp, (stickerStamps) => stickerStamps.routineId, {
