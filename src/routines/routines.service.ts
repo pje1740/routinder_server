@@ -32,10 +32,25 @@ export class RoutinesService {
       return new Error('Invalid Days');
   }
 
+  async activeRoutines(routine: Routine) {
+    const currentDate = new Date();
+    const [emptyArr, cnt] = await this.routinesRepository
+      .createQueryBuilder('routine')
+      .select('*')
+      .where('routine.userId = :id', { id: routine.userId })
+      .where('routine.endDate >= :now', { now: currentDate })
+      .getManyAndCount();
+
+    return cnt;
+  }
+
   async create(createRoutineInput: CreateRoutineInput): Promise<Routine> {
     const newRoutine = this.routinesRepository.create(createRoutineInput);
     if (this.validateDate(newRoutine) instanceof Error)
       throw new Error(this.validateDate(newRoutine).message);
+    if ((await this.activeRoutines(newRoutine)) > 10)
+      throw new Error('Max 10 routines can be registered');
+
     const savedRoutine = await this.routinesRepository.save(newRoutine);
     this.stickerStampsService.create(savedRoutine);
     return savedRoutine;
