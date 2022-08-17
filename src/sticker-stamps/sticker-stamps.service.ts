@@ -45,7 +45,7 @@ export class StickerStampsService {
   }
 
   daysToStickerStamp(routine: Routine) {
-    const { user, id, startDate, endDate, days } = { ...routine };
+    const { userId, id, startDate, endDate, days } = { ...routine };
     let startTim = startDate.getTime();
     const endTim = endDate.getTime();
     const stamps = [];
@@ -94,7 +94,7 @@ export class StickerStampsService {
     //4. 시작날짜 세팅해주고 첫 인덱스는 삭제
     startTim += 1000 * 60 * 60 * 24 * interval[0];
     const stamp = {
-      userId: user.id,
+      userId,
       routineId: id,
       when: new Date(startTim),
     };
@@ -109,7 +109,7 @@ export class StickerStampsService {
       startTim += 1000 * 60 * 60 * 24 * interval[strtIdx];
       const startDate = new Date(startTim);
       const stamp = {
-        userId: user.id,
+        userId,
         routineId: id,
         when: startDate,
       };
