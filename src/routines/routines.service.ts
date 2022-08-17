@@ -32,7 +32,7 @@ export class RoutinesService {
       return new Error('Invalid Days');
   }
 
-  async activeRoutines(routine: Routine) {
+  async getActiveRoutines(routine: Routine) {
     const currentDate = new Date();
     const [emptyArr, cnt] = await this.routinesRepository
       .createQueryBuilder('routine')
@@ -48,7 +48,7 @@ export class RoutinesService {
     const newRoutine = this.routinesRepository.create(createRoutineInput);
     if (this.validateDate(newRoutine) instanceof Error)
       throw new Error(this.validateDate(newRoutine).message);
-    if ((await this.activeRoutines(newRoutine)) > 10)
+    if ((await this.getActiveRoutines(newRoutine)) > 10)
       throw new Error('Max 10 routines can be registered');
 
     const savedRoutine = await this.routinesRepository.save(newRoutine);
