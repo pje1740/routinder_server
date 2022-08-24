@@ -10,21 +10,21 @@ export class OauthController {
   async githubLogin(
     @Body() body,
     @Res({ passthrough: true }) response: Response,
-  ): Promise<{ token: string }> {
+  ): Promise<string> {
     const { data } = body;
-    const jwtToken = this.oauthService.githubLogin(data.code);
-    response.cookie('jwtToken', jwtToken, { httpOnly: true });
-    return jwtToken;
+    const { token } = await this.oauthService.githubLogin(data.code);
+    response.cookie('jwtToken', token, { httpOnly: true });
+    return token;
   }
 
   @Post('google')
   async googleLogin(
     @Body() body,
     @Res({ passthrough: true }) response: Response,
-  ): Promise<{ token: string }> {
+  ): Promise<string> {
     const { data } = body;
-    const jwtToken = this.oauthService.googleLogin(data.code);
-    response.cookie('jwtToken', jwtToken, { httpOnly: true });
-    return jwtToken;
+    const { token } = await this.oauthService.githubLogin(data.code);
+    response.cookie('jwtToken', token, { httpOnly: true });
+    return token;
   }
 }
