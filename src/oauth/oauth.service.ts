@@ -8,7 +8,7 @@ const GITHUB_ACCESS_TOKEN_URL = 'https://github.com/login/oauth/access_token';
 const GITHUB_USER_URL = 'https://api.github.com/user';
 const REDIRECT_URI = 'http://localhost:3000';
 const GOOGLE_ACCESS_TOKEN_URL = 'https://accounts.google.com/o/oauth2/token';
-const GOOGLE_REDIRECT_URI = 'http://localhost:3000/ggl-login-callback';
+const GOOGLE_REDIRECT_URI = 'http://localhost:3000/login-callback';
 @Injectable()
 export class OauthService {
   constructor(
