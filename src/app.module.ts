@@ -24,6 +24,7 @@ import { OauthModule } from './oauth/oauth.module';
           return connection;
         }
       },
+      cors: { origin: process.env.CLIENT_IP, credentials: true },
     }),
     ConfigModule.forRoot({
       isGlobal: true,
