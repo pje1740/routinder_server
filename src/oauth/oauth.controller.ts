@@ -23,7 +23,7 @@ export class OauthController {
     @Res({ passthrough: true }) response: Response,
   ): Promise<string> {
     const { data } = body;
-    const { token } = await this.oauthService.githubLogin(data.code);
+    const { token } = await this.oauthService.googleLogin(data.code);
     response.cookie('jwtToken', token, { httpOnly: true });
     return token;
   }
