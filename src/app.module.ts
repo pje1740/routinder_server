@@ -40,7 +40,6 @@ import { UsersModule } from './users/users.module';
       entities: [__dirname + '/**/*.entity.{ts,js}'],
       synchronize: true,
       logging: true,
-      timezone: 'Z',
     }),
     UsersModule,
     RoutinesModule,
